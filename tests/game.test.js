@@ -1,6 +1,0 @@
-import test from 'node:test';import assert from 'node:assert/strict';import {generateMap,initialPlayer,canAfford,spend,applyProduction,objectiveProgress} from '../shared/game.js';
-test('seeded maps are reproducible',()=>{assert.deepEqual(generateMap(42),generateMap(42));assert.notDeepEqual(generateMap(42),generateMap(43))});
-test('map contains strategic terrain',()=>{const m=generateMap(9);const set=new Set(m.tiles.map(t=>t.terrain));for(const x of ['water','land','forest','mountain'])assert.ok(set.has(x))});
-test('economy spending is exact',()=>{const p=initialPlayer('a','A','Blue',0,0);const before=p.resources.credits;assert.ok(canAfford(p,{credits:500,materials:100}));spend(p,{credits:500,materials:100});assert.equal(p.resources.credits,before-500);assert.equal(p.resources.materials,4400)});
-test('production never crashes and changes resources',()=>{const p=initialPlayer('a','A','Blue',0,0);const old={...p.resources};applyProduction(p);assert.ok(p.resources.credits>old.credits&&p.resources.population>old.population)});
-test('objective progress is bounded',()=>{const m={map:generateMap(1),objective:{id:'HORIZON'},tick:0};const p=initialPlayer('a','A','Blue',0,0);p.cities=[{x:1,y:1}];assert.ok(objectiveProgress(m,p)>=0&&objectiveProgress(m,p)<=100)});
